@@ -146,17 +146,18 @@ pizzaDelivery/
    RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
    RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxx
 
-   EMAIL_HOST=smtp.ethereal.email
+   EMAIL_HOST=smtp.gmail.com
    EMAIL_PORT=587
-   EMAIL_USER=
-   EMAIL_PASS=
-   ADMIN_EMAIL=[EMAIL_ADDRESS]`
+   EMAIL_USER=your_gmail@gmail.com
+   EMAIL_PASS=your_gmail_app_password
+   EMAIL_FROM=your_gmail@gmail.com
+   ADMIN_EMAIL=your_gmail@gmail.com
 
    FRONTEND_URL=http://localhost:5173
    INVENTORY_THRESHOLD=20
    ```
 
-> 💡 **Email Setup**: Leave `EMAIL_USER` and `EMAIL_PASS` empty to use Ethereal (fake SMTP — emails are logged to console with preview URLs). For real emails, use Gmail with an [App Password](https://support.google.com/accounts/answer/185833).
+> 💡 **Email Setup**: Supports Ethereal (fake SMTP), Gmail (using an App Password), or Resend (using Resend SMTP). See `server/utils/emailService.js` for details.
 
 ---
 

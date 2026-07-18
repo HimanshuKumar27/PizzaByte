@@ -54,7 +54,7 @@ const sendVerificationEmail = async (email, name, token) => {
   const verifyUrl = `${process.env.FRONTEND_URL}/verify-email/${token}`;
 
   const mailOptions = {
-    from: `"Pizza Delivery 🍕" <${process.env.EMAIL_USER || 'noreply@pizzadelivery.com'}>`,
+    from: `"Pizza Delivery 🍕" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@pizzadelivery.com'}>`,
     to: email,
     subject: 'Verify Your Email — Pizza Delivery',
     html: `
@@ -95,7 +95,7 @@ const sendPasswordResetEmail = async (email, name, token) => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
   const mailOptions = {
-    from: `"Pizza Delivery 🍕" <${process.env.EMAIL_USER || 'noreply@pizzadelivery.com'}>`,
+    from: `"Pizza Delivery 🍕" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@pizzadelivery.com'}>`,
     to: email,
     subject: 'Reset Your Password — Pizza Delivery',
     html: `
@@ -146,7 +146,7 @@ const sendLowStockAlert = async (lowStockItems) => {
     .join('');
 
   const mailOptions = {
-    from: `"Pizza Delivery 🍕" <${process.env.EMAIL_USER || 'noreply@pizzadelivery.com'}>`,
+    from: `"Pizza Delivery 🍕" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@pizzadelivery.com'}>`,
     to: process.env.ADMIN_EMAIL,
     subject: `⚠️ Low Stock Alert — ${lowStockItems.length} item(s) need restocking`,
     html: `
