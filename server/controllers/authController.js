@@ -289,6 +289,29 @@ const getMe = async (req, res) => {
   });
 };
 
+/**
+ * @route   DELETE /api/auth/delete-account
+ * @desc    Delete logged-in user account and their orders
+ */
+const deleteAccount = async (req, res) => {
+  try {
+    const Order = require('../models/Order');
+    await Order.deleteMany({ user: req.user._id });
+    await User.findByIdAndDelete(req.user._id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Account deleted successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete account',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   register,
   verifyEmail,
@@ -296,4 +319,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getMe,
+  deleteAccount,
 };

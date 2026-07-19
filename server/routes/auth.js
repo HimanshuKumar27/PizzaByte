@@ -8,6 +8,7 @@ const {
   forgotPassword,
   resetPassword,
   getMe,
+  deleteAccount,
 } = require('../controllers/authController');
 
 // Public routes
@@ -19,5 +20,6 @@ router.post('/reset-password/:token', resetPassword);
 
 // Protected routes
 router.get('/me', protect, getMe);
+router.delete('/delete-account', protect, deleteAccount);
 
 module.exports = router;

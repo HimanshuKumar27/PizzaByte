@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import API from '../utils/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import toast from 'react-hot-toast';
 import { ChefHat, ShoppingBag, Clock, MapPin, ClipboardList, TrendingUp, Inbox } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -13,7 +14,8 @@ const fadeVariant = {
 };
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState({ grouped: {} });
   const [loading, setLoading] = useState(true);
@@ -35,6 +37,22 @@ const Dashboard = () => {
     };
     fetchData();
   }, []);
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm(
+      "Are you absolutely sure you want to delete your account? This will permanently delete your account and all associated order history. This action cannot be undone."
+    );
+    if (confirmDelete) {
+      try {
+        await API.delete('/auth/delete-account');
+        toast.success('Your account has been deleted successfully');
+        logout();
+        navigate('/');
+      } catch (err) {
+        toast.error(err.response?.data?.message || 'Failed to delete account');
+      }
+    }
+  };
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -239,6 +257,46 @@ const Dashboard = () => {
               </Link>
             </motion.div>
           )}
+
+          {/* Danger Zone */}
+          <motion.div
+            className="glass-card"
+            initial="hidden"
+            animate="visible"
+            variants={fadeVariant}
+            transition={{ delay: 0.3 }}
+            style={{
+              padding: 'var(--space-xl)',
+              marginTop: 'var(--space-2xl)',
+              border: '1px solid rgba(230, 57, 70, 0.3)',
+              background: 'rgba(230, 57, 70, 0.02)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 'var(--space-md)'
+            }}
+          >
+            <div>
+              <h3 className="heading-sm" style={{ color: '#e63946', margin: 0 }}>
+                Danger Zone
+              </h3>
+              <p className="text-muted" style={{ fontSize: '0.85rem', margin: '4px 0 0 0' }}>
+                Permanently delete your account and all associated order history. This action cannot be undone.
+              </p>
+            </div>
+            <button 
+              onClick={handleDeleteAccount} 
+              className="btn btn-secondary btn-sm"
+              style={{ 
+                borderColor: '#e63946', 
+                color: '#e63946',
+                background: 'transparent'
+              }}
+            >
+              Delete Account
+            </button>
+          </motion.div>
         </div>
         <Footer />
       </div>
