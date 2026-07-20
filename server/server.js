@@ -16,10 +16,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --------------- Middleware ---------------
-let frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+let frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').trim();
 if (frontendUrl.endsWith('/')) {
   frontendUrl = frontendUrl.slice(0, -1);
 }
+
+console.log('🔒 CORS Allowed Origin:', frontendUrl);
 
 app.use(
   cors({
