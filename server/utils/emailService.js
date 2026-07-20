@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer');
 
 let transporter;
 
+const normalizeUrl = (value) => (value || '').trim().replace(/\/+$/, '');
+
 /**
  * Initialize the email transporter.
  * Uses Ethereal (fake SMTP) if no real credentials are configured.
@@ -51,7 +53,8 @@ const initTransporter = async () => {
  */
 const sendVerificationEmail = async (email, name, token) => {
   const t = await initTransporter();
-  const verifyUrl = `${process.env.FRONTEND_URL}/verify-email/${token}`;
+  const frontendUrl = normalizeUrl(process.env.FRONTEND_URL);
+  const verifyUrl = `${frontendUrl}/verify-email/${token}`;
 
   const mailOptions = {
     from: `"PizzaByte 🍕" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@pizzabyte.com'}>`,
@@ -92,7 +95,8 @@ const sendVerificationEmail = async (email, name, token) => {
  */
 const sendPasswordResetEmail = async (email, name, token) => {
   const t = await initTransporter();
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+  const frontendUrl = normalizeUrl(process.env.FRONTEND_URL);
+  const resetUrl = `${frontendUrl}/reset-password/${token}`;
 
   const mailOptions = {
     from: `"PizzaByte 🍕" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@pizzabyte.com'}>`,

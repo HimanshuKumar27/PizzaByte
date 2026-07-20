@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const normalizeUrl = (value) => value?.trim().replace(/\/+$/, '');
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: normalizeUrl(import.meta.env.VITE_API_URL) || 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -37,7 +39,7 @@ API.interceptors.response.use(
 
 // Admin API — uses admin token
 const AdminAPI = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: normalizeUrl(import.meta.env.VITE_API_URL) || 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json',
   },

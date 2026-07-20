@@ -16,31 +16,43 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --------------- Middleware ---------------
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl)
-      if (!origin) return callback(null, true);
+const normalizeOrigin = (value) => (value || '').trim().replace(/\/+$/, '');
 
-      const allowed = process.env.FRONTEND_URL || 'http://localhost:5173';
-      const cleanOrigin = origin.replace(/\/+$/, '');
-      const cleanAllowed = allowed.replace(/\/+$/, '');
-
-      // Allow if it matches allowed, matches localhost, or matches the explicit Vercel origin
-      if (
-        cleanOrigin === cleanAllowed ||
-        cleanOrigin === 'https://pizzabyte-pizza-delivery-platform.vercel.app' ||
-        cleanOrigin.startsWith('http://localhost') ||
-        cleanOrigin.startsWith('http://127.0.0.1')
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error(`Not allowed by CORS: ${origin}`));
-      }
-    },
-    credentials: true,
-  })
+const frontendUrl = normalizeOrigin(process.env.FRONTEND_URL);
+const allowedOrigins = new Set(
+  [
+    frontendUrl,
+    'https://pizzabyte-pizza-delivery-platform.vercel.app',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+  ].filter(Boolean)
 );
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or server-to-server calls)
+    if (!origin) return callback(null, true);
+
+    const cleanOrigin = normalizeOrigin(origin);
+
+    if (
+      allowedOrigins.has(cleanOrigin) ||
+      cleanOrigin.startsWith('http://localhost') ||
+      cleanOrigin.startsWith('http://127.0.0.1')
+    ) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
