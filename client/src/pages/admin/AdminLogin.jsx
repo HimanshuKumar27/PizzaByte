@@ -4,6 +4,7 @@ import { useAdminAuth } from '../../context/AdminAuthContext';
 import toast from 'react-hot-toast';
 import { Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+import PasswordInput from '../../components/PasswordInput';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -58,11 +59,9 @@ const AdminLogin = () => {
 
           <div className="form-group">
             <label className="form-label" htmlFor="admin-password">Password</label>
-            <input
+            <PasswordInput
               id="admin-password"
-              className="form-input"
-              type="password"
-              placeholder='Enter your admin password'
+              placeholder="Enter your admin password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

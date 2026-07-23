@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { LogIn } from 'lucide-react';
 import { motion } from 'framer-motion';
+import PasswordInput from '../components/PasswordInput';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -57,10 +58,8 @@ const Login = () => {
 
           <div className="form-group">
             <label className="form-label" htmlFor="login-password">Password</label>
-            <input
+            <PasswordInput
               id="login-password"
-              className="form-input"
-              type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

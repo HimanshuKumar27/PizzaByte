@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import PasswordInput from '../components/PasswordInput';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -132,10 +133,8 @@ const Register = () => {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="register-password">Password</label>
-                <input
+                <PasswordInput
                   id="register-password"
-                  className="form-input"
-                  type="password"
                   name="password"
                   placeholder="Enter your password"
                   value={formData.password}
@@ -146,10 +145,8 @@ const Register = () => {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="register-confirm">Confirm Password</label>
-                <input
+                <PasswordInput
                   id="register-confirm"
-                  className="form-input"
-                  type="password"
                   name="confirmPassword"
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}

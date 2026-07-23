@@ -4,6 +4,7 @@ import API from '../utils/api';
 import toast from 'react-hot-toast';
 import { Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import PasswordInput from '../components/PasswordInput';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -56,10 +57,8 @@ const ResetPassword = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label" htmlFor="reset-password">New Password</label>
-            <input
+            <PasswordInput
               id="reset-password"
-              className="form-input"
-              type="password"
               placeholder="Enter your new password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -69,10 +68,8 @@ const ResetPassword = () => {
 
           <div className="form-group">
             <label className="form-label" htmlFor="reset-confirm">Confirm New Password</label>
-            <input
+            <PasswordInput
               id="reset-confirm"
-              className="form-input"
-              type="password"
               placeholder="Confirm your new password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
